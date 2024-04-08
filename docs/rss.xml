@@ -1,5 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Boser1u Blog</title><link>https://luzeming0211.github.io</link><description>随缘更新</description><copyright>Boser1u Blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://luzeming0211.github.io</link></image><lastBuildDate>Mon, 08 Apr 2024 05:33:17 +0000</lastBuildDate><managingEditor>Boser1u Blog</managingEditor><ttl>60</ttl><webMaster>Boser1u Blog</webMaster><item><title>ssh 免密码登录和别名</title><link>https://luzeming0211.github.io/post/ssh%20-mian-mi-ma-deng-lu-he-bie-ming.html</link><description>把本地公钥推动到远程服务器(相当于复制到远程的 .ssh/authorized_keys)&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Boser1u Blog</title><link>https://luzeming0211.github.io</link><description>随缘更新</description><copyright>Boser1u Blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://luzeming0211.github.io</link></image><lastBuildDate>Mon, 08 Apr 2024 05:34:03 +0000</lastBuildDate><managingEditor>Boser1u Blog</managingEditor><ttl>60</ttl><webMaster>Boser1u Blog</webMaster><item><title>php 两个日期相差天数</title><link>https://luzeming0211.github.io/post/php%20-liang-ge-ri-qi-xiang-cha-tian-shu.html</link><description>```&#13;
+	// 指定两个日期，转换为 Unix 时间戳&#13;
+&#13;
+	$date1 = strtotime("2017-1-12 22:45:00");&#13;
+&#13;
+	$date2 = strtotime("2018-1-12 10:44:01");&#13;
+&#13;
+	//计算两个日期之间的时间差&#13;
+&#13;
+	$diff= $date1 - $date2 ;&#13;
+&#13;
+	$days =abs(round($diff / 86400));&#13;
+&#13;
+	echo "相差: ".$days."天";&#13;
+```。</description><guid isPermaLink="true">https://luzeming0211.github.io/post/php%20-liang-ge-ri-qi-xiang-cha-tian-shu.html</guid><pubDate>Mon, 08 Apr 2024 05:33:30 +0000</pubDate></item><item><title>ssh 免密码登录和别名</title><link>https://luzeming0211.github.io/post/ssh%20-mian-mi-ma-deng-lu-he-bie-ming.html</link><description>把本地公钥推动到远程服务器(相当于复制到远程的 .ssh/authorized_keys)&#13;
 ```&#13;
 ssh-copy-id -i id_rsa.pub root@192.168.188.212&#13;
 ```&#13;
