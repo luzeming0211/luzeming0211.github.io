@@ -1,5 +1,21 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Boser1u Blog</title><link>https://luzeming0211.github.io</link><description>随缘更新</description><copyright>Boser1u Blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://luzeming0211.github.io</link></image><lastBuildDate>Mon, 08 Apr 2024 05:36:51 +0000</lastBuildDate><managingEditor>Boser1u Blog</managingEditor><ttl>60</ttl><webMaster>Boser1u Blog</webMaster><item><title>AJAX</title><link>https://luzeming0211.github.io/post/AJAX.html</link><description>`&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Boser1u Blog</title><link>https://luzeming0211.github.io</link><description>随缘更新</description><copyright>Boser1u Blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://luzeming0211.github.io</link></image><lastBuildDate>Mon, 08 Apr 2024 05:37:40 +0000</lastBuildDate><managingEditor>Boser1u Blog</managingEditor><ttl>60</ttl><webMaster>Boser1u Blog</webMaster><item><title>laravel homestead 自定义 ip地址</title><link>https://luzeming0211.github.io/post/laravel%20homestead%20-zi-ding-yi-%20ip-di-zhi.html</link><description>1. 修改 Homestead.yaml 中ip为你的自定义ip&#13;
+&#13;
+		&#13;
+			ip: "192.168.168.214"&#13;
+&#13;
+&#13;
+2.  homestead\scripts\Homestead.rb 文件 搜索 Network ，修改代码为 &#13;
+    注意：private_network 改为 public_network，192.168.10.10修改为你的ip地址，注意不要ip冲突&#13;
+&#13;
+&#13;
+			if settings['ip'] != 'autonetwork'&#13;
+				config.vm.network :private_network, ip: settings['ip'] ||= '192.168.188.214'&#13;
+			else&#13;
+				config.vm.network :public_network, ip: '0.0.0.0', auto_network: true&#13;
+			end&#13;
+&#13;
+3.  vagrant reload --provision 重载后 如果有问题，请halt后重试。</description><guid isPermaLink="true">https://luzeming0211.github.io/post/laravel%20homestead%20-zi-ding-yi-%20ip-di-zhi.html</guid><pubDate>Mon, 08 Apr 2024 05:37:18 +0000</pubDate></item><item><title>AJAX</title><link>https://luzeming0211.github.io/post/AJAX.html</link><description>`&#13;
 &#13;
 	//ajax 方式&#13;
 	$.ajax({&#13;
