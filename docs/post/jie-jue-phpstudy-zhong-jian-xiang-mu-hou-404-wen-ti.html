@@ -9,7 +9,18 @@
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="解决phpstudy中建项目后404问题">
+<meta name="description" content="错误页面配置项增加此行
+```
+try_files $uri $uri/ /index.php?$query_string; 
+```。">
+<meta property="og:title" content="解决phpstudy中建项目后404问题">
+<meta property="og:description" content="错误页面配置项增加此行
+```
+try_files $uri $uri/ /index.php?$query_string; 
+```。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://luzeming0211.github.io/post/jie-jue-phpstudy-zhong-jian-xiang-mu-hou-404-wen-ti.html">
+<meta property="og:image" content="https://github.githubassets.com/favicons/favicon.svg">
 <title>解决phpstudy中建项目后404问题</title>
 
 

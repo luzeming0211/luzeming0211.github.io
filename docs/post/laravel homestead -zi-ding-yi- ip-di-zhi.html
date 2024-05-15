@@ -9,7 +9,44 @@
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="laravel homestead 自定义 ip地址">
+<meta name="description" content="1. 修改 Homestead.yaml 中ip为你的自定义ip
+
+		
+			ip: "192.168.168.214"
+
+
+2.  homestead\scripts\Homestead.rb 文件 搜索 Network ，修改代码为 
+    注意：private_network 改为 public_network，192.168.10.10修改为你的ip地址，注意不要ip冲突
+
+
+			if settings['ip'] != 'autonetwork'
+				config.vm.network :private_network, ip: settings['ip'] ||= '192.168.188.214'
+			else
+				config.vm.network :public_network, ip: '0.0.0.0', auto_network: true
+			end
+
+3.  vagrant reload --provision 重载后 如果有问题，请halt后重试。">
+<meta property="og:title" content="laravel homestead 自定义 ip地址">
+<meta property="og:description" content="1. 修改 Homestead.yaml 中ip为你的自定义ip
+
+		
+			ip: "192.168.168.214"
+
+
+2.  homestead\scripts\Homestead.rb 文件 搜索 Network ，修改代码为 
+    注意：private_network 改为 public_network，192.168.10.10修改为你的ip地址，注意不要ip冲突
+
+
+			if settings['ip'] != 'autonetwork'
+				config.vm.network :private_network, ip: settings['ip'] ||= '192.168.188.214'
+			else
+				config.vm.network :public_network, ip: '0.0.0.0', auto_network: true
+			end
+
+3.  vagrant reload --provision 重载后 如果有问题，请halt后重试。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://luzeming0211.github.io/post/laravel%20homestead%20-zi-ding-yi-%20ip-di-zhi.html">
+<meta property="og:image" content="https://github.githubassets.com/favicons/favicon.svg">
 <title>laravel homestead 自定义 ip地址</title>
 
 

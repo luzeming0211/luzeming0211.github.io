@@ -9,7 +9,22 @@
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
-<meta name="description" content="php内使用命令行执行其他php脚本">
+<meta name="description" content="$arg是要传递给php文件的参数，多个参数用空格隔开
+```
+   pclose(popen('cd /var/www/blog && php test.php'.$arg .' '.'> /dev/null 2>&1 &', 'r'));
+```
+
+$argv 是在test.php接收到的参数。">
+<meta property="og:title" content="php内使用命令行执行其他php脚本">
+<meta property="og:description" content="$arg是要传递给php文件的参数，多个参数用空格隔开
+```
+   pclose(popen('cd /var/www/blog && php test.php'.$arg .' '.'> /dev/null 2>&1 &', 'r'));
+```
+
+$argv 是在test.php接收到的参数。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://luzeming0211.github.io/post/php-nei-shi-yong-ming-ling-xing-zhi-xing-qi-ta-php-jiao-ben.html">
+<meta property="og:image" content="https://github.githubassets.com/favicons/favicon.svg">
 <title>php内使用命令行执行其他php脚本</title>
 
 
