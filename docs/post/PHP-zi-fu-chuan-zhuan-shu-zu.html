@@ -10,8 +10,8 @@
         document.documentElement.setAttribute("data-color-mode", theme);
     </script>
 <meta name="description" content="#  字符串转数组
-		$comment_content =  str_replace(",","，",$comment_content);
-	  $sUserId = preg_replace("/(\n)|(\s)|(\t)|(\')|(')|(，)/" ,',' ,$sUserId);
+		$comment_content =  str_replace(',','，',$comment_content);
+	  $sUserId = preg_replace('/(\n)|(\s)|(\t)|(\')|(')|(，)/' ,',' ,$sUserId);
 	  $aUserId = explode(',', $sUserId); //转换为数组了
 
 
@@ -20,8 +20,8 @@
 
 如果需要带引号
 ````
-$a = array("123","321","111");
-$s = "'" . join("','", $a) . "'";
+$a = array('123','321','111');
+$s = ''' . join('','', $a) . ''';
 echo $s;
 
 ````
@@ -33,13 +33,13 @@ $statusInStr = implode(',', $status);
 
 使用
 ````
-$statusInStr = "'".implode("','", $status)."'";
-"select * from table where status in ({$statusInStr})"
+$statusInStr = '''.implode('','', $status).''';
+'select * from table where status in ({$statusInStr})'
 ````。">
 <meta property="og:title" content="PHP字符串转数组">
 <meta property="og:description" content="#  字符串转数组
-		$comment_content =  str_replace(",","，",$comment_content);
-	  $sUserId = preg_replace("/(\n)|(\s)|(\t)|(\')|(')|(，)/" ,',' ,$sUserId);
+		$comment_content =  str_replace(',','，',$comment_content);
+	  $sUserId = preg_replace('/(\n)|(\s)|(\t)|(\')|(')|(，)/' ,',' ,$sUserId);
 	  $aUserId = explode(',', $sUserId); //转换为数组了
 
 
@@ -48,8 +48,8 @@ $statusInStr = "'".implode("','", $status)."'";
 
 如果需要带引号
 ````
-$a = array("123","321","111");
-$s = "'" . join("','", $a) . "'";
+$a = array('123','321','111');
+$s = ''' . join('','', $a) . ''';
 echo $s;
 
 ````
@@ -61,8 +61,8 @@ $statusInStr = implode(',', $status);
 
 使用
 ````
-$statusInStr = "'".implode("','", $status)."'";
-"select * from table where status in ({$statusInStr})"
+$statusInStr = '''.implode('','', $status).''';
+'select * from table where status in ({$statusInStr})'
 ````。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://luzeming0211.github.io/post/PHP-zi-fu-chuan-zhuan-shu-zu.html">
@@ -235,7 +235,6 @@ function iFrameLoading(){
     }
 }
 </script>
-
 
 
 </html>
