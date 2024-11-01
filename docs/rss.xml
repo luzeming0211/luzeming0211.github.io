@@ -1,5 +1,21 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Boser1u Blog</title><link>https://luzeming0211.github.io</link><description>随缘更新</description><copyright>Boser1u Blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://luzeming0211.github.io</link></image><lastBuildDate>Tue, 28 May 2024 16:08:38 +0000</lastBuildDate><managingEditor>Boser1u Blog</managingEditor><ttl>60</ttl><webMaster>Boser1u Blog</webMaster><item><title>处理二维数组中的某个键所对应的值</title><link>https://luzeming0211.github.io/post/chu-li-er-wei-shu-zu-zhong-de-mou-ge-jian-suo-dui-ying-de-zhi.html</link><description>**例：我们想把数组中content格式化htmlspecialchars**&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Boser1u Blog</title><link>https://luzeming0211.github.io</link><description>随缘更新</description><copyright>Boser1u Blog</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://github.githubassets.com/favicons/favicon.svg</url><title>avatar</title><link>https://luzeming0211.github.io</link></image><lastBuildDate>Fri, 01 Nov 2024 09:45:17 +0000</lastBuildDate><managingEditor>Boser1u Blog</managingEditor><ttl>60</ttl><webMaster>Boser1u Blog</webMaster><item><title>解决phpstudy的apache项目40s后超时</title><link>https://luzeming0211.github.io/post/jie-jue-phpstudy-de-apache-xiang-mu-40s-hou-chao-shi.html</link><description>- 1.apache配置文件增加内容&#13;
+```&#13;
+&lt;IfModule mod_fcgid.c&gt;&#13;
+	 FcgidProcessLifeTime 8200&#13;
+	 FcgidIOTimeout 8200&#13;
+	 FcgidConnectTimeout 4000&#13;
+ &lt;/IfModule&gt;&#13;
+```&#13;
+- 2.更换其他apache, 如:使用laravel 的  php artisan serve --host=a.test --port=8001。</description><guid isPermaLink="true">https://luzeming0211.github.io/post/jie-jue-phpstudy-de-apache-xiang-mu-40s-hou-chao-shi.html</guid><pubDate>Fri, 01 Nov 2024 09:39:12 +0000</pubDate></item><item><title>解决phpstudy的apache项目40s后超时</title><link>https://luzeming0211.github.io/post/jie-jue-phpstudy-de-apache-xiang-mu-40s-hou-chao-shi.html</link><description>- 1.apache配置文件增加内容&#13;
+```&#13;
+&lt;IfModule mod_fcgid.c&gt;&#13;
+	 FcgidProcessLifeTime 8200&#13;
+	 FcgidIOTimeout 8200&#13;
+	 FcgidConnectTimeout 4000&#13;
+ &lt;/IfModule&gt;&#13;
+```&#13;
+- 2.更换其他apache, 如:使用laravel 的  php artisan serve --host=a.test --port=8001。</description><guid isPermaLink="true">https://luzeming0211.github.io/post/jie-jue-phpstudy-de-apache-xiang-mu-40s-hou-chao-shi.html</guid><pubDate>Fri, 01 Nov 2024 09:37:08 +0000</pubDate></item><item><title>处理二维数组中的某个键所对应的值</title><link>https://luzeming0211.github.io/post/chu-li-er-wei-shu-zu-zhong-de-mou-ge-jian-suo-dui-ying-de-zhi.html</link><description>**例：我们想把数组中content格式化htmlspecialchars**&#13;
 **首先拿到的数组如下**&#13;
 ````&#13;
 Array&#13;
