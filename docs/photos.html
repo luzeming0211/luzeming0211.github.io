@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boser1u Photos</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .grid {
+            margin: 10px auto;
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+        }
+        .grid-item {
+            margin-bottom: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out;
+            margin-right: 10px;
+        }
+        .grid-item:last-child {
+            margin-right: 0;
+        }
+        .grid-item:hover {
+            transform: scale(1.05);
+        }
+        .grid-item img {
+            width: 100%;
+            display: block;
+            border-radius: 10px;
+        }
+        @media (min-width: 576px) {
+            .grid-item {
+                width: calc(50% - 20px);
+            }
+        }
+        @media (min-width: 768px) {
+            .grid-item {
+                width: calc(33.33% - 20px);
+            }
+        }
+        @media (min-width: 992px) {
+            .grid-item {
+                width: calc(25% - 20px);
+            }
+        }
+    </style>
+</head>
+<body>
+<h1 style="text-align: center; padding: 20px;">Boser1u Photos</h1>
+<div class="grid">
+    <div class="grid-item"><img class="lazy" src="https://luzeming0211.github.io/1.JPG" alt="Image 1"></div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var grid = document.querySelector('.grid');
+        new Masonry(grid, {
+            itemSelector: '.grid-item',
+            percentPosition: true,
+            columnWidth: '.grid-item',
+            gutter: 10
+        });
+    });
+</script>
+</body>
+</html>
