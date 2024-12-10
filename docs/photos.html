@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boser1u Photos</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.5/js/lightbox.min.js" integrity="sha512-KbRFbjA5bwNan6DvPl1ODUolvTTZ/vckssnFhka5cG80JVa5zSlRPCr055xSgU/q6oMIGhZWLhcbgIC0fyw3RQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.5/css/lightbox.css" integrity="sha512-DKdRaC0QGJ/kjx0U0TtJNCamKnN4l+wsMdION3GG0WVK6hIoJ1UPHRHeXNiGsXdrmq19JJxgIubb/Z7Og2qJww==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -56,20 +60,35 @@
 <body>
 <h1 style="text-align: center; padding: 20px;">Boser1u Photos</h1>
 <div class="grid">
-    <div class="grid-item"><img class="lazy" src="https://photos-1257459947.cos.ap-beijing.myqcloud.com/1.JPG" alt="Image 1"></div>
-    <div class="grid-item"><img class="lazy" src="https://photos-1257459947.cos.ap-beijing.myqcloud.com/be9ab0ae34731787b8b425af535a431_compressed.jpg" alt="Image 1"></div>
-    <div class="grid-item"><img class="lazy" src="https://photos-1257459947.cos.ap-beijing.myqcloud.com/e120388227e53b347735c2ddcdc425c_compressed.jpg" alt="Image 1"></div>
+    <a class="grid-item" data-lightbox="roadtrip" href="https://s2.loli.net/2024/12/10/rXndlk7joKG9aTY.jpg"><img class="lazy" src="https://s2.loli.net/2024/12/10/rXndlk7joKG9aTY.jpg" alt="Image 1"></a>
+    <a class="grid-item" data-lightbox="roadtrip" href="https://s2.loli.net/2024/12/10/pIiBbJl9Wx5KeMo.jpg"><img class="lazy" src="https://s2.loli.net/2024/12/10/pIiBbJl9Wx5KeMo.jpg" alt="Image 1"></a>
+    <a class="grid-item" data-lightbox="roadtrip" href="https://s2.loli.net/2024/12/10/GEmkaf2JBsh7Rn1.jpg"><img class="lazy" src="https://s2.loli.net/2024/12/10/GEmkaf2JBsh7Rn1.jpg" alt="Image 1"></a>
 </div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        var grid = document.querySelector('.grid');
-        new Masonry(grid, {
-            itemSelector: '.grid-item',
-            percentPosition: true,
-            columnWidth: '.grid-item',
-            gutter: 10
+        lightbox.option({
+            'resizeDuration': 200,
+            'wrapAround': true
         });
+        var grid = document.querySelector('.grid');
+        var msnry;
+
+        // Wait for all images to load before initializing Masonry
+        imagesLoaded(grid, function() {
+            msnry = new Masonry(grid, {
+                itemSelector: '.grid-item',
+                percentPosition: true,
+                columnWidth: '.grid-item',
+                gutter: 10
+            });
+        });
+
+        // Re-layout Masonry on new image load
+        imagesLoaded(grid).on('progress', function() {
+            msnry.layout();
+        });
+  
     });
 </script>
 </body>
