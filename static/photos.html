@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boser1u Photos</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -64,11 +65,21 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var grid = document.querySelector('.grid');
-        new Masonry(grid, {
-            itemSelector: '.grid-item',
-            percentPosition: true,
-            columnWidth: '.grid-item',
-            gutter: 10
+        var msnry;
+
+        // Wait for all images to load before initializing Masonry
+        imagesLoaded(grid, function() {
+            msnry = new Masonry(grid, {
+                itemSelector: '.grid-item',
+                percentPosition: true,
+                columnWidth: '.grid-item',
+                gutter: 10
+            });
+        });
+
+        // Re-layout Masonry on new image load
+        imagesLoaded(grid).on('progress', function() {
+            msnry.layout();
         });
     });
 </script>
