@@ -59,14 +59,23 @@
 </head>
 <body>
 <h1 style="text-align: center; padding: 20px;">Boser1u Photos</h1>
-<div class="grid">
-    <a class="grid-item" data-lightbox="roadtrip" href="https://s2.loli.net/2024/12/10/rXndlk7joKG9aTY.jpg"><img class="lazy" src="https://s2.loli.net/2024/12/10/rXndlk7joKG9aTY.jpg" alt="Image 1"></a>
+<div class="grid" id="html_list">
+    <!-- <a class="grid-item" data-lightbox="roadtrip" href="https://s2.loli.net/2024/12/10/rXndlk7joKG9aTY.jpg"><img class="lazy" src="https://s2.loli.net/2024/12/10/rXndlk7joKG9aTY.jpg" alt="Image 1"></a>
     <a class="grid-item" data-lightbox="roadtrip" href="https://s2.loli.net/2024/12/10/pIiBbJl9Wx5KeMo.jpg"><img class="lazy" src="https://s2.loli.net/2024/12/10/pIiBbJl9Wx5KeMo.jpg" alt="Image 1"></a>
-    <a class="grid-item" data-lightbox="roadtrip" href="https://s2.loli.net/2024/12/10/GEmkaf2JBsh7Rn1.jpg"><img class="lazy" src="https://s2.loli.net/2024/12/10/GEmkaf2JBsh7Rn1.jpg" alt="Image 1"></a>
+    <a class="grid-item" data-lightbox="roadtrip" href="https://s2.loli.net/2024/12/10/GEmkaf2JBsh7Rn1.jpg"><img class="lazy" src="https://s2.loli.net/2024/12/10/GEmkaf2JBsh7Rn1.jpg" alt="Image 1"></a> -->
 </div>
-
+<script src="./imagesData.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        
+       
+        //console.log(imagesData);
+        // 遍历图片数据
+        const htmlLinks = imagesData.images_list.map(image => {
+  return `<a class="grid-item" data-lightbox="roadtrip" href="${image.url}"><img class="lazy" src="${image.url}" alt="Image"></a>`;
+}).join('');
+
+        document.getElementById('html_list').innerHTML = htmlLinks;
         lightbox.option({
             'resizeDuration': 200,
             'wrapAround': true
@@ -89,6 +98,8 @@
             msnry.layout();
         });
   
+       
+        
     });
 </script>
 </body>
