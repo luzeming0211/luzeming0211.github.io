@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boser1u Photos</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
     <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.5/js/lightbox.min.js" integrity="sha512-KbRFbjA5bwNan6DvPl1ODUolvTTZ/vckssnFhka5cG80JVa5zSlRPCr055xSgU/q6oMIGhZWLhcbgIC0fyw3RQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -66,41 +67,65 @@
 </div>
 <script src="./imagesData.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    $(function() {
+                const htmlLinks = imagesData.images_list.map(image => {
+  return `<a class="grid-item" data-lightbox="roadtrip" href="${image.url}"><img class="lazy" data-original="${image.url}" alt="Image"></a>`;
+}).join('');
+document.getElementById('html_list').innerHTML = htmlLinks;
+        f_masonry();
+    
+        $("img").lazyload({
+            effect:"fadeIn",
+            failurelimit:40,
+            load:f_masonry,
+        });
+    });
+    
+    function f_masonry() {
+        $('.grid').masonry({
+            gutterWidth: 20,
+            itemSelector: '.item',
+            isAnimated: true,
+        });
+    }
+    
+    </script>
+<script>
+//     document.addEventListener("DOMContentLoaded", function() {
         
        
-        //console.log(imagesData);
-        // 遍历图片数据
-        const htmlLinks = imagesData.images_list.map(image => {
-  return `<a class="grid-item" data-lightbox="roadtrip" href="${image.url}"><img class="lazy" src="${image.url}" alt="Image"></a>`;
-}).join('');
+//         //console.log(imagesData);
+//         // 遍历图片数据
+//         const htmlLinks = imagesData.images_list.map(image => {
+//   return `<a class="grid-item" data-lightbox="roadtrip" href="${image.url}"><img class="lazy" src="${image.url}" alt="Image"></a>`;
+// }).join('');
 
-        document.getElementById('html_list').innerHTML = htmlLinks;
-        lightbox.option({
-            'resizeDuration': 200,
-            'wrapAround': true
-        });
-        var grid = document.querySelector('.grid');
-        var msnry;
+//         document.getElementById('html_list').innerHTML = htmlLinks;
+//         lightbox.option({
+//             'resizeDuration': 200,
+//             'wrapAround': true
+//         });
+//         var grid = document.querySelector('.grid');
+//         var msnry;
 
-        // Wait for all images to load before initializing Masonry
-        imagesLoaded(grid, function() {
-            msnry = new Masonry(grid, {
-                itemSelector: '.grid-item',
-                percentPosition: true,
-                columnWidth: '.grid-item',
-                gutter: 10
-            });
-        });
+//         // Wait for all images to load before initializing Masonry
+//         imagesLoaded(grid, function() {
+//             msnry = new Masonry(grid, {
+//                 itemSelector: '.grid-item',
+//                 percentPosition: true,
+//                 columnWidth: '.grid-item',
+//                 gutter: 10
+//             });
+//         });
 
-        // Re-layout Masonry on new image load
-        imagesLoaded(grid).on('progress', function() {
-            msnry.layout();
-        });
+//         // Re-layout Masonry on new image load
+//         imagesLoaded(grid).on('progress', function() {
+//             msnry.layout();
+//         });
   
        
         
-    });
+//     });
 </script>
 </body>
 </html>
