@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>WebRTC 复制粘贴式文件互传（无信令服务器）</title>
+<style>
+*{box-sizing:border-box;font-family:system-ui}
+body{max-width:1100px;margin:16px auto;padding:0 12px;}
+textarea{width:100%;height:180px;padding:8px;font-family:monospace;font-size:12px;}
+button{padding:8px 14px;margin:4px 2px;cursor:pointer}
+.box{border:1px solid #aaa;padding:12px;margin:10px 0;border-radius:6px;}
+#status{white-space:pre-wrap;padding:8px;background:#f5f5f5;min-height:80px;}
+input[type=file]{margin:8px 0;}
+</style>
+</head>
+<body>
+<h2>WebRTC P2P 文件传输｜复制粘贴SDP握手，无后端服务</h2>
+<div class="box">
+  <h4>握手操作步骤</h4>
+  <ol>
+    <li>A端点【生成Offer(发起方A)】，等待下方文本框出现一大段JSON</li>
+    <li>复制全部JSON，通过QQ/微信/手机，发给另一台电脑B</li>
+    <li>B电脑打开本页面，把JSON粘贴进文本框，点【粘贴对方数据并处理】</li>
+    <li>B等待文本框出现新JSON，复制这一段，发回给A电脑</li>
+    <li>A粘贴回文本框，再次点【粘贴对方数据并处理】；等待状态显示通道已打开</li>
+  </ol>
+  <textarea id="signalBox" placeholder="粘贴/复制握手JSON在这里"></textarea>
+  <br>
+  <button onclick="createOffer()">生成Offer(发起方A)</button>
+  <button onclick="processRemoteSignal()">粘贴对方数据并处理</button>
+  <button onclick="clearAll()">重置全部连接</button>
+</div>
+
+<div class="box">
+  <h4>状态日志</h4>
+  <div id="status"></div>
+</div>
+
+<div class="box">
+  <h4>发送文件（通道连通后可用）</h4>
+  <input type="file" id="fileInput" multiple />
+  <button onclick="sendSelectedFiles()">发送选中多文件</button>
+  <div>进度：<span id="sendProgress">0</span></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script>
+const STUN_CONFIG = {
+  iceServers: [
+    { urls: "stun:stun.l.google.com:19302" }
+  ]
+};
+
+let pc = null;
+let dataChannel = null;
+let iceCandidatesBuffer = [];
+let statusEl = document.getElementById("status");
+let signalBox = document.getElementById("signalBox");
+let fileInput = document.getElementById("fileInput");
+let sendProgressEl = document.getElementById("sendProgress");
+
+// 文件传输分片配置
+const CHUNK_SIZE = 16 * 1024; //16KB每片
+let sendQueue = [];
+let receiveFileMap = new Map();
+let zipReceive = new JSZip();
+
+function log(msg){
+  statusEl.innerText += `\n${new Date().toLocaleTimeString()} ${msg}`;
+  statusEl.scrollTop = statusEl.scrollHeight;
+}
+
+function resetPeer(){
+  if(pc){
+    try{ pc.close(); }catch(e){}
+  }
+  pc = new RTCPeerConnection(STUN_CONFIG);
+  iceCandidatesBuffer = [];
+  dataChannel = null;
+
+  pc.onicecandidate = (evt)=>{
+    if(evt.candidate){
+      iceCandidatesBuffer.push(evt.candidate.toJSON());
+    }
+    if(!evt.candidate){
+      // ICE收集完成，输出完整握手包
+      if(pc.localDescription){
+        const payload = {
+          type: pc.localDescription.type,
+          sdp: pc.localDescription.sdp,
+          iceList: iceCandidatesBuffer
+        };
+        signalBox.value = JSON.stringify(payload,null,2);
+        log("✅本地SDP+ICE已生成，复制全部文本发给对端");
+      }
+    }
+  };
+
+  pc.onconnectionstatechange = ()=>{
+    log(`连接状态: ${pc.connectionState}`);
+  };
+
+  pc.ondatachannel = (ev)=>{
+    log("收到远端DataChannel");
+    setupDataChannel(ev.channel);
+  };
+}
+
+function setupDataChannel(dc){
+  dataChannel = dc;
+
+  dc.onopen = ()=>{
+    log("🎉数据通道已打开，可以传输文件！");
+  };
+  dc.onclose = ()=>{ log("⚠️通道关闭"); };
+  dc.onerror = (err)=>{ log(`通道错误: ${err}`); };
+
+  dc.onmessage = async (event)=>{
+    const msg = JSON.parse(event.data);
+    await handleReceiveMessage(msg);
+  };
+}
+
+async function createOffer(){
+  resetPeer();
+  log("正在生成Offer...");
+  const dc = pc.createDataChannel("filetransfer");
+  setupDataChannel(dc);
+  const offer = await pc.createOffer();
+  await pc.setLocalDescription(offer);
+}
+
+async function processRemoteSignal(){
+  const text = signalBox.value.trim();
+  if(!text){ log("请粘贴JSON握手数据"); return; }
+  const remote = JSON.parse(text);
+
+  await pc.setRemoteDescription({
+    type: remote.type,
+    sdp: remote.sdp
+  });
+  for(const iceJson of remote.iceList){
+    await pc.addIceCandidate(new RTCIceCandidate(iceJson));
+  }
+
+  if(remote.type === "offer"){
+    log("收到Offer，正在生成Answer");
+    const answer = await pc.createAnswer();
+    await pc.setLocalDescription(answer);
+  }
+}
+
+function clearAll(){
+  resetPeer();
+  signalBox.value = "";
+  statusEl.innerText = "";
+  receiveFileMap.clear();
+  zipReceive = new JSZip();
+  log("已重置");
+}
+
+// -------- 文件发送逻辑 --------
+async function sendSelectedFiles(){
+  if(!dataChannel || dataChannel.readyState !== "open"){
+    log("❌通道未打开，无法发送文件");
+    return;
+  }
+  const files = Array.from(fileInput.files);
+  if(files.length ===0){ log("请选择文件"); return; }
+
+  log(`准备发送 ${files.length} 个文件`);
+  sendQueue = [];
+
+  for(const f of files){
+    const arrayBuf = await f.arrayBuffer();
+    const uint8 = new Uint8Array(arrayBuf);
+    const totalChunks = Math.ceil(uint8.length / CHUNK_SIZE);
+
+    // 发送文件头
+    dataChannel.send(JSON.stringify({
+      kind:"file_meta",
+      name:f.name,
+      size:f.size,
+      totalChunks,
+      mimeType:f.type
+    }));
+
+    //分片入队
+    for(let i=0;i<totalChunks;i++){
+      const start = i*CHUNK_SIZE;
+      const end = Math.min(start+CHUNK_SIZE, uint8.length);
+      const sliceBuf = uint8.slice(start, end);
+      sendQueue.push({
+        kind:"chunk",
+        filename:f.name,
+        index:i,
+        data: Array.from(sliceBuf)
+      });
+    }
+  }
+
+  // 顺序发送队列
+  let sent =0;
+  for(const item of sendQueue){
+    dataChannel.send(JSON.stringify(item));
+    sent++;
+    sendProgressEl.innerText = `${sent}/${sendQueue.length}`;
+    await sleep(1); // 节流，防止浏览器缓冲区爆掉
+  }
+  dataChannel.send(JSON.stringify({kind:"done_all"}));
+  log("✅全部文件发送完毕");
+}
+
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+// -------- 文件接收逻辑 --------
+async function handleReceiveMessage(msg){
+  switch(msg.kind){
+    case "file_meta":{
+      receiveFileMap.set(msg.name, {
+        name:msg.name,
+        size:msg.size,
+        totalChunks:msg.totalChunks,
+        chunks:new Array(msg.totalChunks).fill(null)
+      });
+      log(`接收文件元信息: ${msg.name}`);
+      break;
+    }
+    case "chunk":{
+      const fileObj = receiveFileMap.get(msg.filename);
+      if(!fileObj) return;
+      fileObj.chunks[msg.index] = new Uint8Array(msg.data);
+      break;
+    }
+    case "done_all":{
+      log("📥全部分片接收完成，打包ZIP下载");
+      for(const [fname,info] of receiveFileMap.entries()){
+        const fullBuf = concatUint8Array(info.chunks);
+        zipReceive.file(fname, fullBuf);
+      }
+      const zipBlob = await zipReceive.generateAsync({type:"blob"});
+      triggerDownload(zipBlob, "webrtc_receive_files.zip");
+      receiveFileMap.clear();
+      zipReceive = new JSZip();
+      break;
+    }
+  }
+}
+
+function concatUint8Array(arrList){
+  let total = 0;
+  for(const a of arrList) total += a.length;
+  const out = new Uint8Array(total);
+  let offset =0;
+  for(const a of arrList){
+    out.set(a, offset);
+    offset += a.length;
+  }
+  return out;
+}
+
+function triggerDownload(blob, filename){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+resetPeer();
+</script>
+</body>
+</html>
